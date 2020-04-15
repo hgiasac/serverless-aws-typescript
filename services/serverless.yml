@@ -1,0 +1,68 @@
+# Welcome to Serverless!
+#
+# This file is the main config file for your service.
+# It's very minimal at this point and uses default values.
+# You can always add more config options for more control.
+# We've included some commented out config examples here.
+# Just uncomment any of them to get that config option.
+#
+# For full config options, check the docs:
+#    docs.serverless.com
+#
+# Happy Coding!
+
+service: serverless-aws-typescript
+# app and org for use with dashboard.serverless.com
+#app: your-app-name
+#org: your-org-name
+
+# You can pin your service to only deploy with a specific Serverless version
+# Check out our docs for more details
+# frameworkVersion: "=X.X.X"
+
+custom: ${file(../config/${env:NODE_ENV}.yml):custom}
+provider:
+  name: aws
+  runtime: nodejs12.x
+
+  stage: ${file(../config/${env:NODE_ENV}.yml):custom.stage}
+  region: ${file(../config/${env:NODE_ENV}.yml):custom.region}
+  # profile: project-name-${self:provider.stage}
+  deploymentBucket: project-name-${self:provider.stage}
+  environment: ${file(../config/${env:NODE_ENV}.yml):environment}
+
+  timeout: 30
+
+plugins:
+  - serverless-plugin-typescript
+  - serverless-offline
+
+# you can add packaging information here
+package:
+# include:
+  exclude:
+  - './server/.nyc_output'
+  - './server/coverage'
+  - ./server/__tests__/**
+
+functions:
+  sample:
+    handler: src/sample/handler.handler
+    events:
+      - http:
+          path: /sample/{proxy+}
+          method: any
+          cors: true
+        
+
+# you can add CloudFormation resource templates here
+#resources:
+#  Resources:
+#    NewResource:
+#      Type: AWS::S3::Bucket
+#      Properties:
+#        BucketName: my-new-bucket
+#  Outputs:
+#     NewOutput:
+#       Description: "Description for the output"
+#       Value: "Some output value"
