@@ -13,7 +13,7 @@
     "@types/supertest": "^2.0.8",
     "jest": "^25.3.0",
     "offline": "0.0.1",
-    "serverless": "^1.67.3",
+    "serverless": "^3.33.0",
     "serverless-offline": "^6.1.4",
     "serverless-plugin-typescript": "^1.1.9",
     "supertest": "^4.0.2",
